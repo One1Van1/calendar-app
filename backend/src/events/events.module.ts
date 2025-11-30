@@ -7,6 +7,7 @@ import { Reminder } from '../entities/reminder.entity';
 // GET controllers
 import { GetAllEventsController } from '../features/events/GET/get-all/get-all.controller';
 import { GetByIdEventController } from '../features/events/GET/get-by-id/get-by-id.controller';
+import { GetByRangeEventsController } from '../features/events/GET/get-by-range/get-by-range.controller';
 
 // POST controllers
 import { CreateEventController } from '../features/events/POST/create-event/create-event.controller';
@@ -20,6 +21,7 @@ import { DeleteEventController } from '../features/events/DELETE/delete-event/de
 // GET services
 import { GetAllEventsService } from '../features/events/GET/get-all/get-all.service';
 import { GetByIdEventService } from '../features/events/GET/get-by-id/get-by-id.service';
+import { GetByRangeEventsService } from '../features/events/GET/get-by-range/get-by-range.service';
 
 // POST services
 import { CreateEventService } from '../features/events/POST/create-event/create-event.service';
@@ -35,6 +37,7 @@ import { DeleteEventService } from '../features/events/DELETE/delete-event/delet
   controllers: [
     GetAllEventsController,
     GetByIdEventController,
+    GetByRangeEventsController,
     CreateEventController,
     UpdateEventController,
     DeleteEventController,
@@ -42,6 +45,7 @@ import { DeleteEventService } from '../features/events/DELETE/delete-event/delet
   providers: [
     GetAllEventsService,
     GetByIdEventService,
+    GetByRangeEventsService,
     CreateEventService,
     UpdateEventService,
     DeleteEventService,
