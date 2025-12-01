@@ -1,0 +1,58 @@
+{
+  "name": "calendar-app",
+  "version": "1.0.0",
+  "description": "Desktop Calendar Application",
+  "main": "dist/main.js",
+  "author": "Your Name",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "start": "yarn build && electron .",
+    "dev": "yarn build && NODE_ENV=development electron .",
+    "pack": "yarn build && electron-builder --dir",
+    "dist": "yarn build && electron-builder"
+  },
+  "dependencies": {
+    "electron": "^39.2.4",
+    "electron-builder": "^26.0.12"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "typescript": "^5.9.3"
+  },
+  "build": {
+    "appId": "com.calendar.app",
+    "productName": "Calendar",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "renderer/**/*",
+      "package.json"
+    ],
+    "mac": {
+      "category": "public.app-category.productivity",
+      "icon": "assets/icon.icns",
+      "target": [
+        "dmg",
+        "zip"
+      ]
+    },
+    "win": {
+      "icon": "assets/icon.ico",
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "linux": {
+      "icon": "assets/icon.png",
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "category": "Office"
+    }
+  }
+}

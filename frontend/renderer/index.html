@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self' http://localhost:3000">
+    <title>Calendar</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1>📅 Calendar</h1>
+            <div class="header-actions">
+                <button id="todayBtn" class="btn btn-primary">Сегодня</button>
+                <div class="month-navigation">
+                    <button id="prevMonthBtn" class="btn">←</button>
+                    <span id="currentMonth"></span>
+                    <button id="nextMonthBtn" class="btn">→</button>
+                </div>
+                <button id="newEventBtn" class="btn btn-success">+ Новое событие</button>
+            </div>
+        </header>
+
+        <div class="container">
+            <aside class="sidebar">
+                <div class="mini-calendar">
+                    <h3>Мини-календарь</h3>
+                    <div id="miniCalendar"></div>
+                </div>
+                
+                <div class="categories">
+                    <h3>Категории</h3>
+                    <div id="categoriesList"></div>
+                    <button id="newCategoryBtn" class="btn btn-sm">+ Категория</button>
+                </div>
+            </aside>
+
+            <main class="main-content">
+                <div class="calendar-grid" id="calendarGrid">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p>Загрузка календаря...</p>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal для создания события -->
+    <div id="eventModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Новое событие</h2>
+            <form id="eventForm">
+                <div class="form-group">
+                    <label for="eventTitle">Название</label>
+                    <input type="text" id="eventTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="eventDescription">Описание</label>
+                    <textarea id="eventDescription" rows="3"></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="eventStartDate">Начало</label>
+                        <input type="datetime-local" id="eventStartDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventEndDate">Конец</label>
+                        <input type="datetime-local" id="eventEndDate" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="eventCategory">Категория</label>
+                    <select id="eventCategory">
+                        <option value="">Без категории</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="eventAllDay">
+                        Весь день
+                    </label>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn" id="cancelBtn">Отмена</button>
+                    <button type="submit" class="btn btn-primary">Создать</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="app.new.js"></script>
+</body>
+</html>
