@@ -3,12 +3,12 @@
 export const typeSelectionView = {
     show() {
         const modal = document.getElementById('typeSelectionModal');
-        modal.style.display = 'block';
+        modal.classList.add('show');
     },
 
     hide() {
         const modal = document.getElementById('typeSelectionModal');
-        modal.style.display = 'none';
+        modal.classList.remove('show');
     },
 
     getHTML() {
