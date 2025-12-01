@@ -4,6 +4,7 @@ import { HeaderComponent } from './components/Header/header.logic.js';
 import { SidebarComponent } from './components/Sidebar/sidebar.logic.js';
 import { CalendarComponent } from './components/Calendar/calendar.logic.js';
 import { ModalComponent } from './components/Modal/modal.logic.js';
+import { DayModalComponent } from './components/DayModal/day-modal.logic.js';
 import { initializeBackgrounds } from './init-backgrounds.js';
 
 class App {
@@ -39,7 +40,14 @@ class App {
         this.components.sidebar = new SidebarComponent();
         await this.components.sidebar.initialize();
 
-        this.components.calendar = new CalendarComponent(this.components.sidebar);
+        // Initialize day modal
+        this.components.dayModal = new DayModalComponent();
+        this.components.dayModal.initialize();
+
+        this.components.calendar = new CalendarComponent(
+            this.components.sidebar,
+            this.components.dayModal
+        );
         await this.components.calendar.initialize();
 
         this.components.header = new HeaderComponent((date) => {

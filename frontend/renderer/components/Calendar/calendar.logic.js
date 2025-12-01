@@ -5,14 +5,26 @@ import { dateUtils } from '../../utils/date.utils.js';
 import { calendarView } from './calendar.view.js';
 
 export class CalendarComponent {
-    constructor(sidebarComponent) {
+    constructor(sidebarComponent, dayModalComponent) {
         this.currentDate = new Date();
         this.events = [];
         this.sidebarComponent = sidebarComponent;
+        this.dayModalComponent = dayModalComponent;
     }
 
     async initialize() {
+        // Устанавливаем обработчик двойного клика
+        calendarView.onDayDoubleClick = (date, events) => {
+            this.handleDayDoubleClick(date, events);
+        };
+        
         await this.render();
+    }
+
+    handleDayDoubleClick(date, events) {
+        if (this.dayModalComponent) {
+            this.dayModalComponent.open(date, events);
+        }
     }
 
     async render() {

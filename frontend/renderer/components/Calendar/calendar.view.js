@@ -7,6 +7,7 @@ import { CalendarGridView } from '../CalendarGrid/grid.view.js';
 
 export const calendarView = {
     gridLogic: new CalendarGridLogic(),
+    onDayDoubleClick: null,
 
     render(calendarData, events, sidebarComponent) {
         const calendarGrid = document.getElementById('calendarGrid');
@@ -24,5 +25,19 @@ export const calendarView = {
         const gridHTML = CalendarGridView.render(this.gridLogic.getWeekdays(), daysHTML);
         
         calendarGrid.innerHTML = gridHTML;
+
+        // Добавляем обработчик двойного клика на дни
+        this.attachDayClickHandlers(days);
+    },
+
+    attachDayClickHandlers(days) {
+        const dayElements = document.querySelectorAll('.calendar-day');
+        dayElements.forEach((element, index) => {
+            element.addEventListener('dblclick', () => {
+                if (this.onDayDoubleClick && days[index]) {
+                    this.onDayDoubleClick(days[index].date, days[index].events);
+                }
+            });
+        });
     }
 };
