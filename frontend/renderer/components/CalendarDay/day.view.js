@@ -4,14 +4,14 @@ export const CalendarDayView = {
     // Настройки внешнего вида
     styles: {
         // Цвета
-        backgroundColor: 'transparent',           // Фон дня
-        backgroundColorHover: 'rgba(255, 255, 255, 0.2)',  // Фон при наведении
-        borderColor: 'transparent',              // Цвет границы
-        borderColorHover: 'rgba(255, 255, 255, 0.3)',      // Цвет границы при наведении
+        backgroundColor: 'rgba(255, 255, 255, 0.08)',     // Полупрозрачный фон дня
+        backgroundColorHover: 'rgba(255, 255, 255, 0.18)', // Фон при наведении
+        borderColor: 'rgba(255, 255, 255, 0.15)',         // Видимый контур
+        borderColorHover: 'rgba(255, 255, 255, 0.3)',     // Контур при наведении
         
         // Сегодняшний день
-        todayBackgroundColor: '#4a6b8a',         // Фон для текущего дня
-        todayBorderColor: '#3498db',             // Граница для текущего дня
+        todayBackgroundColor: 'rgba(52, 152, 219, 0.25)', // Полупрозрачный синий
+        todayBorderColor: 'rgba(52, 152, 219, 0.6)',      // Синий контур
         
         // Другие месяцы
         otherMonthOpacity: '0.3',                // Прозрачность дней других месяцев
