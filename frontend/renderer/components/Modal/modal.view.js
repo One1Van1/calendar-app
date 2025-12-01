@@ -3,9 +3,14 @@
 export const modalView = {
     show(data) {
         const eventModal = document.getElementById('eventModal');
+        const modalTitle = eventModal?.querySelector('h2');
         const startDateInput = document.getElementById('eventStartDate');
         const endDateInput = document.getElementById('eventEndDate');
         const categorySelect = document.getElementById('eventCategory');
+
+        if (modalTitle) {
+            modalTitle.textContent = data.title || 'Создать событие';
+        }
 
         if (eventModal) {
             eventModal.classList.add('show');
@@ -17,6 +22,16 @@ export const modalView = {
 
         if (endDateInput) {
             endDateInput.value = data.endDate;
+        }
+
+        // Для напоминаний скрываем поле "Конец"
+        const endDateGroup = endDateInput?.closest('.form-group');
+        if (endDateGroup) {
+            if (data.type === 'reminder') {
+                endDateGroup.style.display = 'none';
+            } else {
+                endDateGroup.style.display = 'block';
+            }
         }
 
         if (categorySelect) {

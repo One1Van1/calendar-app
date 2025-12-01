@@ -1,10 +1,8 @@
 import { app, BrowserWindow, nativeImage, NativeImage } from 'electron';
 import * as path from 'path';
-import { spawn, ChildProcess } from 'child_process';
 import { Canvas, createCanvas } from 'canvas';
 
 let mainWindow: BrowserWindow | null = null;
-let backendProcess: ChildProcess | null = null;
 
 // Функция для создания динамической иконки с датой
 function createDateIcon(date: number): NativeImage {
@@ -69,55 +67,6 @@ function startIconUpdater(): void {
   }, 60000); // Проверяем каждую минуту
 }
 
-// Запуск NestJS backend
-function startBackend(): Promise<void> {
-  return new Promise((resolve, reject) => {
-    const backendPath = path.join(__dirname, '../../backend');
-    
-    console.log('Starting NestJS backend...');
-    backendProcess = spawn('yarn', ['start:dev'], {
-      cwd: backendPath,
-      shell: true,
-      stdio: 'pipe',
-    });
-
-    backendProcess.stdout?.on('data', (data: Buffer) => {
-      const output = data.toString();
-      console.log(`[Backend]: ${output}`);
-      
-      // Проверяем, что сервер запустился
-      if (output.includes('Application is running on')) {
-        console.log('Backend started successfully!');
-        resolve();
-      }
-    });
-
-    backendProcess.stderr?.on('data', (data: Buffer) => {
-      console.error(`[Backend Error]: ${data.toString()}`);
-    });
-
-    backendProcess.on('error', (error: Error) => {
-      console.error('Failed to start backend:', error);
-      reject(error);
-    });
-
-    // Таймаут на запуск
-    setTimeout(() => {
-      console.log('Backend startup timeout - assuming it started');
-      resolve();
-    }, 10000);
-  });
-}
-
-// Остановка backend при закрытии приложения
-function stopBackend(): void {
-  if (backendProcess) {
-    console.log('Stopping backend...');
-    backendProcess.kill();
-    backendProcess = null;
-  }
-}
-
 // Создание главного окна
 function createWindow(): void {
   mainWindow = new BrowserWindow({
@@ -156,13 +105,10 @@ function createWindow(): void {
 // Инициализация приложения
 app.whenReady().then(async () => {
   try {
-    // Сначала запускаем backend
-    await startBackend();
+    // Просто создаём окно без запуска бэкенда
+    // Предполагаем, что бэкенд уже запущен отдельно
+    console.log('Starting frontend (backend should be running separately on port 3000)');
     
-    // Ждём немного, чтобы backend точно поднялся
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    // Затем создаём окно
     createWindow();
     
     // Запускаем обновление иконки
@@ -181,16 +127,16 @@ app.whenReady().then(async () => {
 
 // Закрытие приложения
 app.on('window-all-closed', () => {
-  stopBackend();
+  // Не останавливаем бэкенд, т.к. он запущен отдельно
   if (process.platform !== 'darwin') {
     app.quit();
   }
 });
 
 app.on('before-quit', () => {
-  stopBackend();
+  // Бэкенд работает независимо
 });
 
 app.on('will-quit', () => {
-  stopBackend();
+  // Бэкенд работает независимо
 });

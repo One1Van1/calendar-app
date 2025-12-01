@@ -1,0 +1,14 @@
+{
+  "name": "calendar-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "backend": "cd backend && yarn start:dev",
+    "frontend": "cd frontend && yarn start",
+    "start": "concurrently \"yarn backend\" \"yarn frontend\"",
+    "install-all": "cd backend && yarn install && cd ../frontend && yarn install"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

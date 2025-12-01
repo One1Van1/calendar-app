@@ -5,6 +5,7 @@ import { SidebarComponent } from './components/Sidebar/sidebar.logic.js';
 import { CalendarComponent } from './components/Calendar/calendar.logic.js';
 import { ModalComponent } from './components/Modal/modal.logic.js';
 import { DayModalComponent } from './components/DayModal/day-modal.logic.js';
+import { TypeSelectionComponent } from './components/TypeSelection/type-selection.logic.js';
 import { initializeBackgrounds } from './init-backgrounds.js';
 
 class App {
@@ -57,11 +58,24 @@ class App {
         this.components.header.initialize();
         this.components.header.updateMonthDisplay(this.components.calendar.currentDate);
 
+        // Initialize modal for creating events/tasks/reminders
         this.components.modal = new ModalComponent(
             this.components.sidebar,
             () => this.components.calendar.render()
         );
         this.components.modal.initialize();
+
+        // Initialize type selection modal
+        this.components.typeSelection = new TypeSelectionComponent((type) => {
+            this.components.modal.show(type);
+        });
+        this.components.typeSelection.initialize();
+
+        // Connect "New Event" button to type selection
+        const newEventBtn = document.getElementById('newEventBtn');
+        newEventBtn?.addEventListener('click', () => {
+            this.components.typeSelection.show();
+        });
     }
 }
 
