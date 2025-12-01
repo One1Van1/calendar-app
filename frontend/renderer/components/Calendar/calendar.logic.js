@@ -8,6 +8,7 @@ export class CalendarComponent {
     constructor(sidebarComponent, dayModalComponent) {
         this.currentDate = new Date();
         this.events = [];
+        this.singleDayEvents = []; // Новые single-day события
         this.sidebarComponent = sidebarComponent;
         this.dayModalComponent = dayModalComponent;
     }
@@ -37,8 +38,24 @@ export class CalendarComponent {
         // Build calendar data
         const calendarData = this.buildCalendarData(year, month);
 
+        // Load single-day events for current month days
+        await this.loadSingleDayEventsForMonth(calendarData.days, year, month);
+
         // Render view
         calendarView.render(calendarData, this.events, this.sidebarComponent);
+    }
+
+    async loadSingleDayEventsForMonth(days, year, month) {
+        // Загружаем события только для дней текущего месяца
+        const currentMonthDays = days.filter(d => d.isCurrentMonth);
+        
+        // Загружаем события параллельно для всех дней
+        const promises = currentMonthDays.map(async (dayData) => {
+            const events = await apiService.fetchSingleDayEventsByDate(dayData.date);
+            dayData.singleDayEvents = events;
+        });
+
+        await Promise.all(promises);
     }
 
     buildCalendarData(year, month) {
@@ -56,7 +73,8 @@ export class CalendarComponent {
                 isCurrentMonth: false,
                 isToday: false,
                 date: new Date(year, month - 1, day),
-                events: []
+                events: [],
+                singleDayEvents: []
             });
         }
 
@@ -72,7 +90,8 @@ export class CalendarComponent {
                 isCurrentMonth: true,
                 isToday,
                 date,
-                events: dayEvents
+                events: dayEvents,
+                singleDayEvents: [] // Будем загружать по требованию
             });
         }
 
@@ -84,7 +103,8 @@ export class CalendarComponent {
                 isCurrentMonth: false,
                 isToday: false,
                 date: new Date(year, month + 1, day),
-                events: []
+                events: [],
+                singleDayEvents: []
             });
         }
 
@@ -96,6 +116,11 @@ export class CalendarComponent {
             const eventDate = new Date(e.startDate);
             return dateUtils.isSameDay(eventDate, date);
         });
+    }
+
+    // Загрузить single-day события для конкретного дня
+    async loadSingleDayEventsForDate(date) {
+        return await apiService.fetchSingleDayEventsByDate(date);
     }
 
     updateDate(newDate) {

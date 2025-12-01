@@ -83,5 +83,48 @@ export const apiService = {
             console.error('Error deleting event:', error);
             throw error;
         }
+    },
+
+    // Single Day Events
+    async fetchSingleDayEventsByDate(date) {
+        try {
+            // Формат: YYYY-MM-DD
+            const dateStr = date.toISOString().split('T')[0];
+            const response = await fetch(`${API_BASE}/single-day-events?date=${dateStr}`);
+            const data = await response.json();
+            return data.events || [];
+        } catch (error) {
+            console.error('Error fetching single day events:', error);
+            return [];
+        }
+    },
+
+    async createSingleDayEvent(eventData) {
+        try {
+            const response = await fetch(`${API_BASE}/single-day-events`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(eventData),
+            });
+            return await response.json();
+        } catch (error) {
+            console.error('Error creating single day event:', error);
+            throw error;
+        }
+    },
+
+    async updateChecklist(eventId, checklist) {
+        try {
+            const response = await fetch(`${API_BASE}/single-day-events/${eventId}/checklist`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ checklist }),
+            });
+            return await response.json();
+        } catch (error) {
+            console.error('Error updating checklist:', error);
+            throw error;
+        }
     }
 };
+

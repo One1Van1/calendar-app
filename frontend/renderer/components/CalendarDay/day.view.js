@@ -48,10 +48,13 @@ export const CalendarDayView = {
                     background: ${this.styles.backgroundColor};
                     border: 1px solid ${this.styles.borderColor};
                     border-radius: ${this.styles.borderRadius};
-                    padding: ${this.styles.padding};
                     cursor: pointer;
                     transition: all ${this.styles.transitionDuration};
                     position: relative;
+                    display: flex;
+                    flex-direction: column;
+                    padding: 0;
+                    overflow: hidden;
                     ${dayLogic.isToday ? `
                         background: ${this.styles.todayBackgroundColor} !important;
                         border-color: ${this.styles.todayBorderColor} !important;
@@ -63,35 +66,105 @@ export const CalendarDayView = {
                 onmouseover="this.style.background='${this.styles.backgroundColorHover}'; this.style.borderColor='${this.styles.borderColorHover}'; this.style.transform='scale(${this.styles.hoverScale})';"
                 onmouseout="this.style.background='${dayLogic.isToday ? this.styles.todayBackgroundColor : this.styles.backgroundColor}'; this.style.borderColor='${dayLogic.isToday ? this.styles.todayBorderColor : this.styles.borderColor}'; this.style.transform='scale(1)';"
             >
-                <div style="
-                    font-weight: ${this.styles.numberFontWeight};
-                    font-size: ${this.styles.numberFontSize};
-                    color: ${this.styles.textColor};
-                    margin-bottom: 0.25rem;
+                <!-- Верхняя часть с датой (25-30%) -->
+                <div class="calendar-day-header" style="
+                    flex: 0 0 28%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 0.5rem;
+                    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
                 ">
-                    ${dayLogic.day}
-                </div>
-                ${dayLogic.hasEvents() ? `
-                    <div style="display: flex; align-items: center; gap: 2px; flex-wrap: wrap;">
-                        ${visibleEvents.map(event => `
-                            <div style="
-                                width: ${this.styles.eventDotSize};
-                                height: ${this.styles.eventDotSize};
-                                border-radius: 50%;
-                                background: ${getCategoryColor(event.categoryId)};
-                                display: inline-block;
-                                margin-right: ${this.styles.eventDotMargin};
-                            "></div>
-                        `).join('')}
-                        ${hiddenCount > 0 ? `
-                            <span style="
-                                font-size: 0.7rem;
-                                color: ${this.styles.textColor};
-                                margin-left: 2px;
-                            ">+${hiddenCount}</span>
-                        ` : ''}
+                    <div style="
+                        font-weight: ${this.styles.numberFontWeight};
+                        font-size: ${this.styles.numberFontSize};
+                        color: ${this.styles.textColor};
+                    ">
+                        ${dayLogic.day}
                     </div>
-                ` : ''}
+                </div>
+                
+                <!-- Нижняя часть с событиями (70-75%) -->
+                <div class="calendar-day-body" style="
+                    flex: 1;
+                    padding: 0.5rem;
+                    overflow: hidden;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.25rem;
+                ">
+                    ${dayLogic.singleDayEvents && dayLogic.singleDayEvents.length > 0 ? `
+                        ${dayLogic.singleDayEvents.slice(0, 2).map(event => `
+                            <div class="single-day-event-item" style="
+                                display: flex;
+                                flex-direction: column;
+                                padding: 0.25rem;
+                                background: rgba(255, 255, 255, 0.1);
+                                border-radius: 3px;
+                                font-size: 0.7rem;
+                            ">
+                                <div style="
+                                    color: ${this.styles.textColor};
+                                    font-weight: 600;
+                                    margin-bottom: 0.15rem;
+                                    white-space: nowrap;
+                                    overflow: hidden;
+                                    text-overflow: ellipsis;
+                                ">
+                                    ${event.startTime ? event.startTime.substring(0, 5) + ' ' : ''}${event.name}
+                                </div>
+                                ${event.progress !== null && event.progress !== undefined ? `
+                                    <div style="
+                                        width: 100%;
+                                        height: 3px;
+                                        background: rgba(255, 255, 255, 0.2);
+                                        border-radius: 2px;
+                                        overflow: hidden;
+                                    ">
+                                        <div style="
+                                            width: ${event.progress}%;
+                                            height: 100%;
+                                            background: linear-gradient(to right, #3498db, #2ecc71);
+                                            transition: width 0.3s ease;
+                                        "></div>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        `).join('')}
+                        ${dayLogic.singleDayEvents.length > 2 ? `
+                            <div style="
+                                font-size: 0.65rem;
+                                color: ${this.styles.textColor};
+                                opacity: 0.7;
+                                text-align: center;
+                            ">
+                                +${dayLogic.singleDayEvents.length - 2} ещё
+                            </div>
+                        ` : ''}
+                    ` : `
+                        ${dayLogic.hasEvents() ? `
+                            <div style="display: flex; align-items: center; gap: 2px; flex-wrap: wrap;">
+                                ${visibleEvents.map(event => `
+                                    <div style="
+                                        width: ${this.styles.eventDotSize};
+                                        height: ${this.styles.eventDotSize};
+                                        border-radius: 50%;
+                                        background: ${getCategoryColor(event.categoryId)};
+                                        display: inline-block;
+                                        margin-right: ${this.styles.eventDotMargin};
+                                    "></div>
+                                `).join('')}
+                                ${hiddenCount > 0 ? `
+                                    <span style="
+                                        font-size: 0.7rem;
+                                        color: ${this.styles.textColor};
+                                        margin-left: 2px;
+                                    ">+${hiddenCount}</span>
+                                ` : ''}
+                            </div>
+                        ` : ''}
+                    `}
+                </div>
             </div>
         `;
     }

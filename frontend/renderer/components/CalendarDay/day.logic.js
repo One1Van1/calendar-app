@@ -7,22 +7,31 @@ export class CalendarDayLogic {
         this.isToday = dayData.isToday;
         this.date = dayData.date;
         this.events = dayData.events;
+        this.singleDayEvents = dayData.singleDayEvents || []; // Новое поле
     }
 
     // Проверяет, есть ли события в этот день
     hasEvents() {
-        return this.events && this.events.length > 0;
+        return (this.events && this.events.length > 0) || (this.singleDayEvents && this.singleDayEvents.length > 0);
     }
 
     // Возвращает количество событий
     getEventsCount() {
-        return this.events ? this.events.length : 0;
+        const oldCount = this.events ? this.events.length : 0;
+        const newCount = this.singleDayEvents ? this.singleDayEvents.length : 0;
+        return oldCount + newCount;
     }
 
     // Возвращает первые N событий для отображения
     getVisibleEvents(maxCount = 3) {
         if (!this.events) return [];
         return this.events.slice(0, maxCount);
+    }
+
+    // Возвращает single-day события для отображения
+    getVisibleSingleDayEvents(maxCount = 3) {
+        if (!this.singleDayEvents) return [];
+        return this.singleDayEvents.slice(0, maxCount);
     }
 
     // Возвращает количество скрытых событий
