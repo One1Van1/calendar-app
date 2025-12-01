@@ -3,6 +3,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { EventsModule } from './events/events.module';
+import { RemindersModule } from './reminders/reminders.module';
+import { TasksModule } from './tasks/tasks.module';
 import databaseConfig from './config/database.config';
 import appConfig from './config/app.config';
 
@@ -23,6 +26,11 @@ import appConfig from './config/app.config';
       }),
       inject: [ConfigService],
     }),
+
+    // Модули приложения
+    EventsModule,
+    RemindersModule,
+    TasksModule,
   ],
   controllers: [AppController],
   providers: [AppService],
