@@ -11,9 +11,29 @@ class App {
         this.components = {};
     }
 
+    updateDynamicIcon() {
+        const iconElement = document.getElementById('dynamicIcon');
+        if (iconElement) {
+            const currentDate = new Date().getDate();
+            iconElement.setAttribute('data-date', currentDate);
+        }
+        
+        // Update every minute to catch day changes
+        setInterval(() => {
+            const iconElement = document.getElementById('dynamicIcon');
+            if (iconElement) {
+                const currentDate = new Date().getDate();
+                iconElement.setAttribute('data-date', currentDate);
+            }
+        }, 60000);
+    }
+
     async initialize() {
         // Initialize background styles
         initializeBackgrounds();
+
+        // Update dynamic icon with current date
+        this.updateDynamicIcon();
 
         // Initialize components
         this.components.sidebar = new SidebarComponent();

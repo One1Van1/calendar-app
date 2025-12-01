@@ -1,9 +1,73 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, nativeImage, NativeImage } from 'electron';
 import * as path from 'path';
 import { spawn, ChildProcess } from 'child_process';
+import { Canvas, createCanvas } from 'canvas';
 
 let mainWindow: BrowserWindow | null = null;
 let backendProcess: ChildProcess | null = null;
+
+// Функция для создания динамической иконки с датой
+function createDateIcon(date: number): NativeImage {
+  const canvas: Canvas = createCanvas(512, 512);
+  const ctx = canvas.getContext('2d');
+
+  // Фон (красный квадрат со скруглёнными углами)
+  ctx.fillStyle = '#d74937';
+  ctx.beginPath();
+  ctx.roundRect(50, 50, 412, 412, 50);
+  ctx.fill();
+
+  // Верхняя белая полоса
+  ctx.fillStyle = '#ffffff';
+  ctx.beginPath();
+  ctx.roundRect(50, 50, 412, 100, [50, 50, 0, 0]);
+  ctx.fill();
+
+  // Текст месяца (маленький, сверху)
+  const months = ['ЯНВ', 'ФЕВ', 'МАР', 'АПР', 'МАЙ', 'ИЮН', 'ИЮЛ', 'АВГ', 'СЕН', 'ОКТ', 'НОЯ', 'ДЕК'];
+  const month = months[new Date().getMonth()];
+  
+  ctx.fillStyle = '#000000';
+  ctx.font = 'bold 45px -apple-system, BlinkMacSystemFont, "Segoe UI"';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(month, 256, 100);
+
+  // Число (большое, в центре)
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 280px -apple-system, BlinkMacSystemFont, "Segoe UI"';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(date.toString(), 256, 320);
+
+  return nativeImage.createFromBuffer(canvas.toBuffer());
+}
+
+// Функция обновления иконки
+function updateAppIcon(): void {
+  const currentDate = new Date().getDate();
+  const icon = createDateIcon(currentDate);
+  
+  if (mainWindow && !mainWindow.isDestroyed()) {
+    // Для macOS устанавливаем иконку в Dock
+    if (process.platform === 'darwin') {
+      app.dock?.setIcon(icon);
+    }
+    // Для Windows/Linux устанавливаем иконку окна
+    mainWindow.setIcon(icon);
+  }
+}
+
+// Запуск таймера для обновления иконки каждую минуту
+function startIconUpdater(): void {
+  // Обновляем сразу
+  updateAppIcon();
+  
+  // Затем обновляем каждую минуту (на случай смены дня)
+  setInterval(() => {
+    updateAppIcon();
+  }, 60000); // Проверяем каждую минуту
+}
 
 // Запуск NestJS backend
 function startBackend(): Promise<void> {
@@ -100,6 +164,9 @@ app.whenReady().then(async () => {
     
     // Затем создаём окно
     createWindow();
+    
+    // Запускаем обновление иконки
+    startIconUpdater();
   } catch (error) {
     console.error('Failed to start application:', error);
     app.quit();
