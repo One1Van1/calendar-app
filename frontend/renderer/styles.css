@@ -1,8 +1,8 @@
 :root {
-    /* Единственная тёмная тема - серо-синий фон */
-    --bg-primary: #5b7a9b;
-    --bg-secondary: #5b7a9b;
-    --bg-tertiary: #5b7a9b;
+    /* Единственная тёмная тема - более тёмный серо-синий фон */
+    --bg-primary: #10476e;
+    --bg-secondary: #10476e;
+    --bg-tertiary: #10476e;
     --text-primary: #ffffff;
     --text-secondary: #e0e0e0;
     --text-muted: #c0c0c0;
@@ -12,7 +12,7 @@
     --accent-primary-hover: #5dade2;
     --accent-success: #2ecc71;
     --accent-success-hover: #52d98e;
-    --card-bg: #5b7a9b;
+    --card-bg: #10476e;
     --hover-bg: rgba(255, 255, 255, 0.15);
     --shadow: rgba(0, 0, 0, 0.3);
     --today-bg: #4a6b8a;
@@ -406,9 +406,9 @@ header h1 {
 
 /* Header */
 header {
-    background: white;
+    background: var(--bg-primary);
     padding: 1rem 2rem;
-    border-bottom: 1px solid #e0e0e0;
+    border-bottom: 1px solid var(--border-color);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -440,8 +440,9 @@ header h1 {
 /* Buttons */
 .btn {
     padding: 0.5rem 1rem;
-    border: 1px solid #ddd;
-    background: white;
+    border: 1px solid var(--border-color);
+    background: var(--bg-primary);
+    color: var(--text-primary);
     border-radius: 6px;
     cursor: pointer;
     font-size: 0.9rem;
@@ -449,7 +450,7 @@ header h1 {
 }
 
 .btn:hover {
-    background: #f5f5f5;
+    background: var(--hover-bg);
 }
 
 .btn-primary {
@@ -487,8 +488,8 @@ header h1 {
 /* Sidebar */
 .sidebar {
     width: 250px;
-    background: white;
-    border-right: 1px solid #e0e0e0;
+    background: var(--bg-primary);
+    border-right: 1px solid var(--border-color);
     padding: 1rem;
     overflow-y: auto;
 }
@@ -538,7 +539,7 @@ header h1 {
 }
 
 .calendar-grid {
-    background: white;
+    background: var(--card-bg);
     border-radius: 8px;
     padding: 1rem;
     min-height: 500px;
@@ -586,7 +587,7 @@ header h1 {
 }
 
 .modal-content {
-    background-color: white;
+    background-color: var(--card-bg);
     padding: 2rem;
     border-radius: 8px;
     width: 90%;

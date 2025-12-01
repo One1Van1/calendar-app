@@ -4,7 +4,7 @@ export const CalendarGridView = {
     // Настройки внешнего вида сетки
     styles: {
         // Фон сетки
-        backgroundColor: '#5b7a9b',              // Цвет фона всей сетки
+        backgroundColor: '#10476e',              // Цвет фона всей сетки
         borderRadius: '8px',                     // Скругление углов
         padding: '1rem',                         // Внутренний отступ
         

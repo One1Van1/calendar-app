@@ -4,7 +4,7 @@ export const SidebarBackgroundView = {
     // Настройки внешнего вида боковой панели
     styles: {
         // Фон
-        backgroundColor: '#5b7a9b',              // Цвет фона боковой панели
+        backgroundColor: '#10476e',              // Цвет фона боковой панели
         
         // Размеры
         width: '250px',                          // Ширина панели

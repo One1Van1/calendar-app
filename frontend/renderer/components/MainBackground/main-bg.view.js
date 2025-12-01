@@ -4,7 +4,7 @@ export const MainBackgroundView = {
     // Настройки внешнего вида основной области
     styles: {
         // Фон
-        backgroundColor: '#5b7a9b',              // Цвет фона основной области
+        backgroundColor: '#10476e',              // Цвет фона основной области
         
         // Отступы
         padding: '1rem',                         // Внутренний отступ
