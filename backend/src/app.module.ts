@@ -3,10 +3,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { EventsModule } from './events/events.module';
-import { CategoriesModule } from './categories/categories.module';
-import { RemindersModule } from './reminders/reminders.module';
-import { SingleDayEventsModule } from './single-day-events/single-day-events.module';
 import databaseConfig from './config/database.config';
 import appConfig from './config/app.config';
 
@@ -27,12 +23,6 @@ import appConfig from './config/app.config';
       }),
       inject: [ConfigService],
     }),
-    
-    // Модули приложения
-    EventsModule,
-    CategoriesModule,
-    RemindersModule,
-    SingleDayEventsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
